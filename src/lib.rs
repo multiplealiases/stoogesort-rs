@@ -4,20 +4,20 @@ pub trait StoogeExt {
 
 impl<T: Ord> StoogeExt for Vec<T> {
     fn stooge_sort(&mut self) {
-        _stooge_sort(self, 0, self.len() - 1);
+        stooge_sort(self, 0, self.len() - 1);
     }
 }
 
-fn _stooge_sort<T: Ord>(v: &mut Vec<T>, left: usize, right: usize) {
+fn stooge_sort<T: Ord>(v: &mut Vec<T>, left: usize, right: usize) {
     if v[left] > v[right] {
         v.swap(left, right);
     }
 
     if (right - left + 1) > 2 {
         let third = ((right as f64 - left as f64 + 1.0) / 3.0).floor() as usize;
-        _stooge_sort(v, left, right - third);
-        _stooge_sort(v, left + third, right);
-        _stooge_sort(v, left, right - third);
+        stooge_sort(v, left, right - third);
+        stooge_sort(v, left + third, right);
+        stooge_sort(v, left, right - third);
     }
 }
 

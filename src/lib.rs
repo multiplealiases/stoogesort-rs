@@ -2,14 +2,13 @@ pub trait StoogeExt {
     fn stooge_sort(&mut self);
 }
 
-impl<T> StoogeExt for Vec<T> where T: Ord {
+impl<T: Ord> StoogeExt for Vec<T> {
     fn stooge_sort(&mut self) {
         _stooge_sort(self, 0, self.len() - 1);
     }
 }
 
-fn _stooge_sort<T>(v: &mut Vec<T>, left: usize, right: usize)
-where T: Ord {
+fn _stooge_sort<T: Ord>(v: &mut Vec<T>, left: usize, right: usize) {
     if v[left] > v[right] {
         v.swap(left, right);
     }

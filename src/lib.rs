@@ -53,4 +53,17 @@ mod tests {
 
         assert_eq!(test, reference);
     }
+
+    #[test]
+    fn random1000() {
+        let mut rng = rand::thread_rng();
+        let range = Uniform::new(-100, 100);
+        let mut test: Vec<i64> = (1..=1000).map(|_| rng.sample(&range)).collect();
+        let mut reference = test.clone();
+
+        test.stooge_sort();
+        reference.sort();
+
+        assert_eq!(test, reference);
+    }
 }

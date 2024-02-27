@@ -1,6 +1,11 @@
+#![doc = include_str!("../README.md")]
 use std::cmp::Ordering;
 
 pub trait Stooge<T> {
+    /// Sorts the slice using stooge sort.
+    ///
+    /// This sort is unstable, has worst-case performance of O(n ^ (log(3)/log(1.5)))
+    /// ≈ O(n ^ 2.7095), and recurses at most n levels deep.
     fn stooge_sort(&mut self)
     where
         T: Ord;

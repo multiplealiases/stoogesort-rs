@@ -1,10 +1,10 @@
 use std::cmp::Ordering;
 
-trait StoogeOrd<T: Ord> {
+pub trait StoogeOrd<T: Ord> {
     fn stooge_sort(&mut self);
 }
 
-trait Stooge<T> {
+pub trait Stooge<T> {
     fn stooge_sort_by<F>(&mut self, compare: F)
     where
         F: FnMut(&T, &T) -> Ordering;

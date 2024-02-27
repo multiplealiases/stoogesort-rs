@@ -5,7 +5,6 @@ Implements 2 methods for stooge-sorting `[T]`/`Vec<T>`:
 * `.stooge_sort()` (for `Ord` types)
 * `.stooge_sort_by()` (for everything else; bring your own comparator function!)
 
-
 # Usage
 
 Usage should be identical to the `.sort()` and
@@ -13,6 +12,7 @@ Usage should be identical to the `.sort()` and
 
 Sorting an [Ord](std::cmp) type using
 [`.stooge_sort()`](Stooge::stooge_sort):
+
 ```
 use stoogesort::Stooge;
 let mut nums = [3, 2, 1, -5];
@@ -23,6 +23,7 @@ assert_eq!(nums, [-5, 1, 2, 3]);
 Sorting a [PartialOrd](std::cmp) type using
 [`.stooge_sort_by()`](Stooge::stooge_sort_by)
 (and with the exact same syntax as [`slice::sort_by`])
+
 ```
 use stoogesort::Stooge;
 let mut floats = [0.1, 0.0, 1.0, -1.6];

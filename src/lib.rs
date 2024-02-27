@@ -1,14 +1,19 @@
 use std::cmp::Ordering;
 
 pub trait Stooge<T> {
-    fn stooge_sort(&mut self) where T: Ord;
+    fn stooge_sort(&mut self)
+    where
+        T: Ord;
     fn stooge_sort_by<F>(&mut self, compare: F)
     where
         F: FnMut(&T, &T) -> Ordering;
 }
 
 impl<T> Stooge<T> for [T] {
-    fn stooge_sort(&mut self) where T: Ord {
+    fn stooge_sort(&mut self)
+    where
+        T: Ord,
+    {
         if self.is_empty() || self.len() == 1 {
         } else {
             stooge_sort(self, 0, self.len() - 1, &mut T::lt);

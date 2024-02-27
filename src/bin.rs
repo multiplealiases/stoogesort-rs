@@ -1,6 +1,6 @@
 use std::io;
 use std::io::BufRead;
-use stoogesort::StoogeOrd;
+use stoogesort::Stooge;
 fn main() {
     if atty::is(atty::Stream::Stdin) {
       println!("Pipe in a newline-separated list of ints");

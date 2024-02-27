@@ -12,7 +12,7 @@ impl<T: Ord> StoogeOrd<T> for Vec<T> {
     fn stooge_sort(&mut self) {
         if self.is_empty() || self.len() == 1 {}
         else {
-            _stooge_sort(self, 0, self.len() - 1, &mut T::lt);
+            stooge_sort(self, 0, self.len() - 1, &mut T::lt);
         }
     }
 }
@@ -22,12 +22,12 @@ impl<T> Stooge<T> for Vec<T> {
     where F: FnMut(&T, &T) -> Ordering, {
         if self.is_empty() || self.len() == 1 {}
         else {
-        _stooge_sort(self, 0, self.len() - 1, &mut |a, b| compare(a,b) == Ordering::Less);
+        stooge_sort(self, 0, self.len() - 1, &mut |a, b| compare(a,b) == Ordering::Less);
         }
     }
 }
 
-fn _stooge_sort<T, F>(v: &mut Vec<T>, left: usize, right: usize, is_less: &mut F)
+fn stooge_sort<T, F>(v: &mut Vec<T>, left: usize, right: usize, is_less: &mut F)
 where
     F: FnMut(&T, &T) -> bool,
 {
@@ -37,9 +37,9 @@ where
 
     if (right - left + 1) > 2 {
         let third = (right - left + 1) / 3;
-        _stooge_sort(v, left, right - third, is_less);
-        _stooge_sort(v, left + third, right, is_less);
-        _stooge_sort(v, left, right - third, is_less);
+        stooge_sort(v, left, right - third, is_less);
+        stooge_sort(v, left + third, right, is_less);
+        stooge_sort(v, left, right - third, is_less);
     }
 }
 

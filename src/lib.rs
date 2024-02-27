@@ -114,4 +114,562 @@ mod tests {
 
         assert_eq!(test, reference);
     }
+
+    #[test]
+    fn vec_of_char() {
+        let mut test: Vec<char> = "1312".chars().collect();
+        test.sort();
+        assert_eq!(test, "1123".chars().collect::<Vec<char>>());
+    }
+
+    #[test]
+    fn vec_of_str() {
+        let test: &mut [&str] = &mut ["6502", "2650", "680x0", "Z80"];
+        test.stooge_sort();
+        assert_eq!(test, ["2650", "6502", "680x0", "Z80"]);
+    }
+
+    #[test]
+    fn big_iron() {
+        let big_iron: String = "to the town of agua fria
+        rode a stranger one fine day
+        hardly spoke to folks around him
+        didn't have too much to say
+        no one dared to ask his business
+        no one dared to make a slip
+        the stranger there among them
+        had a big iron on his hip
+        big iron on his hip
+
+        it was early in the morning
+        when he rode into the town
+        he came riding from the south side
+        slowly looking all around
+        he's an outlaw loose and running
+        came the whisper from each lip
+        and he's here to do some business
+        with the big iron on his hip
+        big iron on his hip
+
+        in this town there lived an outlaw
+        by the name of texas red
+        many men had tried to take him
+        and that many men were dead
+        he was vicious and a killer
+        though a youth of twenty-four
+        and the notches on his pistol
+        numbered one and nineteen more
+        one and nineteen more
+
+        now the stranger started talking
+        made it plain to folks around
+        was an arizona ranger
+        wouldn't be too long in town
+        he came here to take an outlaw
+        back alive or maybe dead
+        and he said it didn't matter
+        he was after texas red
+        after texas red
+
+        wasn't long before the story
+        was relayed to texas red
+        but the outlaw didn't worry
+        men that tried before were dead
+        twenty men had tried to take him
+        twenty men had made a slip
+        twenty-one would be the ranger
+        with the big iron on his hip
+        big iron on his hip
+
+        the morning passed so quickly
+        it was time for them to meet
+        it was twenty past eleven
+        when they walked out in the street
+        folks were watching from the windows
+        everybody held their breath
+        they knew this handsome ranger
+        was about to meet his death
+        'bout to meet his death
+
+        there was forty feet between them
+        when they stopped to make their play
+        and the swiftness of the ranger
+        is still talked about today
+        texas red had not cleared leather
+        'fore a bullet fairly ripped
+        and the ranger's aim was deadly
+        with the big iron on his hip
+        big iron on his hip
+
+        it was over in a moment
+        and the folks had gathered round
+        there before them lay the body
+        of the outlaw on the ground
+        oh he might have went on livin'
+        but he made one fatal slip
+        when he tried to match the ranger
+        with the big iron on his hip
+        big iron on his hip
+
+        big iron big iron
+        when he tried to match the ranger
+        with the big iron on his hip
+        big iron on his hip"
+            .to_string();
+        let mut words: Vec<String> = big_iron
+            .replace("\n", "")
+            .split(&[' ', '-'])
+            .filter(|&x| !x.is_empty())
+            .map(|s| s.to_owned())
+            .collect();
+        words.stooge_sort();
+        assert_eq!(
+            words,
+            [
+                "'bout",
+                "'fore",
+                "a",
+                "a",
+                "a",
+                "a",
+                "a",
+                "a",
+                "a",
+                "a",
+                "about",
+                "about",
+                "after",
+                "after",
+                "agua",
+                "aim",
+                "alive",
+                "all",
+                "among",
+                "an",
+                "an",
+                "an",
+                "an",
+                "and",
+                "and",
+                "and",
+                "and",
+                "and",
+                "and",
+                "and",
+                "and",
+                "and",
+                "and",
+                "and",
+                "arizona",
+                "around",
+                "around",
+                "around",
+                "ask",
+                "back",
+                "be",
+                "be",
+                "before",
+                "before",
+                "before",
+                "between",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "big",
+                "body",
+                "breath",
+                "bullet",
+                "business",
+                "business",
+                "but",
+                "but",
+                "by",
+                "came",
+                "came",
+                "came",
+                "cleared",
+                "dared",
+                "dared",
+                "day",
+                "dead",
+                "dead",
+                "dead",
+                "deadly",
+                "death",
+                "death",
+                "didn't",
+                "didn't",
+                "didn't",
+                "do",
+                "each",
+                "early",
+                "eleven",
+                "everybody",
+                "fairly",
+                "fatal",
+                "feet",
+                "fine",
+                "folks",
+                "folks",
+                "folks",
+                "folks",
+                "for",
+                "forty",
+                "four",
+                "fria",
+                "from",
+                "from",
+                "from",
+                "gathered",
+                "ground",
+                "had",
+                "had",
+                "had",
+                "had",
+                "had",
+                "had",
+                "handsome",
+                "hardly",
+                "have",
+                "have",
+                "he",
+                "he",
+                "he",
+                "he",
+                "he",
+                "he",
+                "he",
+                "he",
+                "he",
+                "he",
+                "he's",
+                "he's",
+                "held",
+                "here",
+                "here",
+                "him",
+                "him",
+                "him",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "hip",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "his",
+                "in",
+                "in",
+                "in",
+                "in",
+                "in",
+                "into",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "iron",
+                "is",
+                "it",
+                "it",
+                "it",
+                "it",
+                "it",
+                "it",
+                "killer",
+                "knew",
+                "lay",
+                "leather",
+                "lip",
+                "lived",
+                "livin'",
+                "long",
+                "long",
+                "looking",
+                "loose",
+                "made",
+                "made",
+                "made",
+                "make",
+                "make",
+                "many",
+                "many",
+                "match",
+                "match",
+                "matter",
+                "maybe",
+                "meet",
+                "meet",
+                "meet",
+                "men",
+                "men",
+                "men",
+                "men",
+                "men",
+                "might",
+                "moment",
+                "more",
+                "more",
+                "morning",
+                "morning",
+                "much",
+                "name",
+                "nineteen",
+                "nineteen",
+                "no",
+                "no",
+                "not",
+                "notches",
+                "now",
+                "numbered",
+                "of",
+                "of",
+                "of",
+                "of",
+                "of",
+                "oh",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "on",
+                "one",
+                "one",
+                "one",
+                "one",
+                "one",
+                "one",
+                "one",
+                "or",
+                "out",
+                "outlaw",
+                "outlaw",
+                "outlaw",
+                "outlaw",
+                "outlaw",
+                "over",
+                "passed",
+                "past",
+                "pistol",
+                "plain",
+                "play",
+                "quickly",
+                "ranger",
+                "ranger",
+                "ranger",
+                "ranger",
+                "ranger",
+                "ranger",
+                "ranger's",
+                "red",
+                "red",
+                "red",
+                "red",
+                "red",
+                "relayed",
+                "riding",
+                "ripped",
+                "rode",
+                "rode",
+                "round",
+                "running",
+                "said",
+                "say",
+                "side",
+                "slip",
+                "slip",
+                "slip",
+                "slowly",
+                "so",
+                "some",
+                "south",
+                "spoke",
+                "started",
+                "still",
+                "stopped",
+                "story",
+                "stranger",
+                "stranger",
+                "stranger",
+                "street",
+                "swiftness",
+                "take",
+                "take",
+                "take",
+                "talked",
+                "talking",
+                "texas",
+                "texas",
+                "texas",
+                "texas",
+                "texas",
+                "that",
+                "that",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "the",
+                "their",
+                "their",
+                "them",
+                "them",
+                "them",
+                "them",
+                "there",
+                "there",
+                "there",
+                "there",
+                "they",
+                "they",
+                "they",
+                "this",
+                "this",
+                "though",
+                "time",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "to",
+                "today",
+                "too",
+                "too",
+                "town",
+                "town",
+                "town",
+                "town",
+                "tried",
+                "tried",
+                "tried",
+                "tried",
+                "tried",
+                "twenty",
+                "twenty",
+                "twenty",
+                "twenty",
+                "twenty",
+                "vicious",
+                "walked",
+                "was",
+                "was",
+                "was",
+                "was",
+                "was",
+                "was",
+                "was",
+                "was",
+                "was",
+                "was",
+                "was",
+                "wasn't",
+                "watching",
+                "went",
+                "were",
+                "were",
+                "were",
+                "when",
+                "when",
+                "when",
+                "when",
+                "when",
+                "whisper",
+                "windows",
+                "with",
+                "with",
+                "with",
+                "with",
+                "with",
+                "worry",
+                "would",
+                "wouldn't",
+                "youth"
+            ]
+        )
+    }
 }

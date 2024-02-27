@@ -1,23 +1,45 @@
-pub trait StoogeExt {
+use std::cmp::Ordering;
+
+trait StoogeOrd<T: Ord> {
     fn stooge_sort(&mut self);
 }
 
-impl<T: Ord> StoogeExt for Vec<T> {
+trait Stooge<T> {
+    fn stooge_sort_by<F>(&mut self, compare: F) where F: FnMut(&T, &T) -> Ordering;
+}
+
+impl<T: Ord> StoogeOrd<T> for Vec<T> {
     fn stooge_sort(&mut self) {
-        stooge_sort(self, 0, self.len() - 1);
+        if self.is_empty() || self.len() == 1 {}
+        else {
+            _stooge_sort(self, 0, self.len() - 1, &mut T::lt);
+        }
     }
 }
 
-fn stooge_sort<T: Ord>(v: &mut Vec<T>, left: usize, right: usize) {
-    if v[left] > v[right] {
+impl<T> Stooge<T> for Vec<T> {
+    fn stooge_sort_by<F>(&mut self, mut compare: F)
+    where F: FnMut(&T, &T) -> Ordering, {
+        if self.is_empty() || self.len() == 1 {}
+        else {
+        _stooge_sort(self, 0, self.len() - 1, &mut |a, b| compare(a,b) == Ordering::Less);
+        }
+    }
+}
+
+fn _stooge_sort<T, F>(v: &mut Vec<T>, left: usize, right: usize, is_less: &mut F)
+where
+    F: FnMut(&T, &T) -> bool,
+{
+    if !is_less(&v[left], &v[right]) {
         v.swap(left, right);
     }
 
     if (right - left + 1) > 2 {
-        let third = ((right as f64 - left as f64 + 1.0) / 3.0).floor() as usize;
-        stooge_sort(v, left, right - third);
-        stooge_sort(v, left + third, right);
-        stooge_sort(v, left, right - third);
+        let third = (right - left + 1) / 3;
+        _stooge_sort(v, left, right - third, is_less);
+        _stooge_sort(v, left + third, right, is_less);
+        _stooge_sort(v, left, right - third, is_less);
     }
 }
 
@@ -25,6 +47,20 @@ fn stooge_sort<T: Ord>(v: &mut Vec<T>, left: usize, right: usize) {
 mod tests {
     use super::*;
     use rand::{distributions::Uniform, Rng};
+
+    #[test]
+    fn no_elements() {
+        let mut test: Vec<u8> = [].to_vec();
+        test.stooge_sort();
+        assert_eq!(test, []);
+    }
+
+    #[test]
+    fn one_element() {
+        let mut test: Vec<u16> = [8580].to_vec();
+        test.stooge_sort();
+        assert_eq!(test, [8580])
+    }
 
     #[test]
     fn trivial() {
@@ -62,6 +98,19 @@ mod tests {
 
         test.stooge_sort();
         reference.sort();
+
+        assert_eq!(test, reference);
+    }
+
+    #[test]
+    fn sort_floats() {
+        let mut rng = rand::thread_rng();
+        let range = Uniform::new(-1000.0, 1000.0);
+        let mut test: Vec<f64> = (1..=100).map(|_| rng.sample(&range)).collect();
+        let mut reference: Vec<f64> = test.clone();
+
+        test.stooge_sort_by(|a, b| a.partial_cmp(b).unwrap());
+        reference.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
         assert_eq!(test, reference);
     }

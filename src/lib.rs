@@ -10,7 +10,7 @@ trait Stooge<T> {
         F: FnMut(&T, &T) -> Ordering;
 }
 
-impl<T: Ord> StoogeOrd<T> for Vec<T> {
+impl<T: Ord> StoogeOrd<T> for [T] {
     fn stooge_sort(&mut self) {
         if self.is_empty() || self.len() == 1 {
         } else {
@@ -19,7 +19,7 @@ impl<T: Ord> StoogeOrd<T> for Vec<T> {
     }
 }
 
-impl<T> Stooge<T> for Vec<T> {
+impl<T> Stooge<T> for [T] {
     fn stooge_sort_by<F>(&mut self, mut compare: F)
     where
         F: FnMut(&T, &T) -> Ordering,
@@ -33,7 +33,7 @@ impl<T> Stooge<T> for Vec<T> {
     }
 }
 
-fn stooge_sort<T, F>(v: &mut Vec<T>, left: usize, right: usize, is_less: &mut F)
+fn stooge_sort<T, F>(v: &mut [T], left: usize, right: usize, is_less: &mut F)
 where
     F: FnMut(&T, &T) -> bool,
 {

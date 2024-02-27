@@ -5,13 +5,15 @@ trait StoogeOrd<T: Ord> {
 }
 
 trait Stooge<T> {
-    fn stooge_sort_by<F>(&mut self, compare: F) where F: FnMut(&T, &T) -> Ordering;
+    fn stooge_sort_by<F>(&mut self, compare: F)
+    where
+        F: FnMut(&T, &T) -> Ordering;
 }
 
 impl<T: Ord> StoogeOrd<T> for Vec<T> {
     fn stooge_sort(&mut self) {
-        if self.is_empty() || self.len() == 1 {}
-        else {
+        if self.is_empty() || self.len() == 1 {
+        } else {
             stooge_sort(self, 0, self.len() - 1, &mut T::lt);
         }
     }
@@ -19,10 +21,14 @@ impl<T: Ord> StoogeOrd<T> for Vec<T> {
 
 impl<T> Stooge<T> for Vec<T> {
     fn stooge_sort_by<F>(&mut self, mut compare: F)
-    where F: FnMut(&T, &T) -> Ordering, {
-        if self.is_empty() || self.len() == 1 {}
-        else {
-        stooge_sort(self, 0, self.len() - 1, &mut |a, b| compare(a,b) == Ordering::Less);
+    where
+        F: FnMut(&T, &T) -> Ordering,
+    {
+        if self.is_empty() || self.len() == 1 {
+        } else {
+            stooge_sort(self, 0, self.len() - 1, &mut |a, b| {
+                compare(a, b) == Ordering::Less
+            });
         }
     }
 }

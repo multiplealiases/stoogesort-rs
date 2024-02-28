@@ -1,9 +1,9 @@
 Ergonomic stooge sort implementation.
 
-Implements 2 methods for stooge-sorting `[T]`/`Vec<T>`:
+Implements 2 methods for stooge-sorting [`[T]`](array)/[`Vec<T>`](std::vec::Vec):
 
-* `.stooge_sort()` (for `Ord` types)
-* `.stooge_sort_by()` (for everything else; bring your own comparator function!)
+* [`.stooge_sort()`](Stooge::stooge_sort) (for [`Ord`](std::cmp) types)
+* [`.stooge_sort_by()`](Stooge::stooge_sort_by) (for everything else; bring your own comparator function!)
 
 # Usage
 
@@ -20,12 +20,12 @@ and import the [`Stooge`] extension trait.
 use stoogesort::Stooge;
 ```
 
-Usage should be identical to the `.sort()` and
- `.sort_by()` methods in [`slice`][slice::sort].
+Usage should be identical to [`slice::sort()`](slice::sort) and
+ [`slice::sort_by()`](slice::sort_by).
 
 # Examples
 
-Sorting an [Ord](std::cmp) type using
+Sorting an [`Ord`](std::cmp::Ord) type using
 [`.stooge_sort()`](Stooge::stooge_sort):
 
 ```
@@ -35,7 +35,7 @@ nums.stooge_sort();
 assert_eq!(nums, [-5, 1, 2, 3]);
 ```
 
-Sorting a [PartialOrd](std::cmp) type using
+Sorting a [`PartialOrd`](std::cmp::PartialOrd) type using
 [`.stooge_sort_by()`](Stooge::stooge_sort_by)
 
 ```
@@ -109,7 +109,8 @@ There is [an obvious receiver here, it should've been a method](https://rust-lan
 At the same time, it also implements these sorting algorithms
 on `[T]` where `T: PartialOrd`, which I'll now describe my problem with:
 
-`PartialOrd`'s `.lt()` (used by the `<` operator), `.gt()` (used by `>`),
+[`PartialOrd`](std::cmp::PartialOrd)'s [`.lt()`](std::cmp::PartialOrd::lt)
+(used by the `<` operator), [`.gt()`](std::cmp::PartialOrd::gt) (used by `>`),
 and its "-or-equal-to" variants are not mathematically airtight.
 Suppose there's an integer type, that, for some reason, has a NaN value.
 I'll call it `NaNInt`. NaN is not a number -- it is nonsense to use NaN
@@ -132,7 +133,7 @@ assert_eq!(c.partial_cmp(c), None);
 
 Okay, we're good. This makes sense. Now, let's consider
 what happens when we use `.lt()` and `.gt()` on a NaN,
-keeping in mind that these methods return a `bool`, not an `Option`.
+keeping in mind that these methods return a [`bool`], not an [`Option`].
 
 ```ignore
 let a = NaNInt::from(1);
@@ -163,10 +164,10 @@ For this reason, the standard library instead provides 2 methods
 
 * [`slice::sort_by()`]
 
-Notice the bound [`Ord`](std::cmp) on [`sort()`](slice) and the distinct lack
-of one on [`sort_by()`](slice). The standard library is protecting you from an
-attempt to naively sort `PartialOrd`s by making you gaze upon
-`.sort_by(|a, b| a.partial_cmp(b))` in the [`sort_by()`](slice) example.
+Notice the bound [`Ord`](std::cmp::Ord) on [`sort()`](slice::sort) and the distinct lack
+of one on [`sort_by()`](slice::sort_by). The standard library is protecting you from an
+attempt to naively sort [`PartialOrd`](std::cmp::PartialOrd)s by making you gaze upon
+`.sort_by(|a, b| a.partial_cmp(b).unwrap())` in the [`sort_by()`](slice::sort_by) example.
 
 As such, I've taken the liberty of imitating the standard library in this library.
 It also makes implementation easy, since I can just copy function signatures and

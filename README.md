@@ -37,7 +37,6 @@ assert_eq!(nums, [-5, 1, 2, 3]);
 
 Sorting a [PartialOrd](std::cmp) type using
 [`.stooge_sort_by()`](Stooge::stooge_sort_by)
-(and with the exact same syntax as [`slice::sort_by()`])
 
 ```
 use stoogesort::Stooge;
@@ -48,7 +47,7 @@ assert_eq!(floats, [-1.6, 0.0, 0.1, 1.0]);
 
 # Acknowledgements
 
-* The Rust docs (license in `LICENSE.rust`) I blatantly plagiarized
+* The Rust project code and docs (license in `LICENSE.rust`) I blatantly plagiarized
 
 * The pseudocode in the [Wikipedia article for stooge sort](https://en.wikipedia.org/wiki/Stooge_sort)
 
@@ -140,10 +139,10 @@ let a = NaNInt::from(1);
 let b = NaNInt::from(2);
 let c = NaNInt::NaN;
 
-assert!(a < b);
-assert!(b > a);
 assert_eq!(c > a, false);
+assert_eq!(c < a, false);
 assert_eq!(b < c, false);
+assert_eq!(b > c, false);
 assert_eq!(c > c, false);
 assert_eq!(c < c, false);
 ```
@@ -170,3 +169,5 @@ attempt to naively sort `PartialOrd`s by making you gaze upon
 `.sort_by(|a, b| a.partial_cmp(b))` in the [`sort_by()`](slice) example.
 
 As such, I've taken the liberty of imitating the standard library in this library.
+It also makes implementation easy, since I can just copy function signatures and
+even the code itself at times.

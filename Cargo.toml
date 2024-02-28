@@ -7,6 +7,7 @@ license = "MIT"
 rust-version = "1.56.1"
 repository = "https://github.com/multiplealiases/stoogesort-rs"
 readme = "README.md"
+description = "An ergonomic stooge sort implementation"
 
 [lib]
 name = "stoogesort"

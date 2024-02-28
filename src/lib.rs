@@ -4,11 +4,42 @@ use std::cmp::Ordering;
 pub trait Stooge<T> {
     /// Sorts the slice using stooge sort.
     ///
-    /// This sort is unstable, has worst-case performance of O(n ^ (log(3)/log(1.5)))
-    /// ≈ O(n ^ 2.7095), and recurses at most n levels deep.
-    fn stooge_sort(&mut self)
+    /// This sort is unstable, has worst-case
+    /// time complexity of O(n^(log(3)/log(1.5)))
+    /// ≈ O(n^2.7095), and recurses at most n levels deep.
+    ///
+    /// ```
+    /// use stoogesort::Stooge;
+    /// let mut v = [-5, 4, 1, -3, 2];
+    ///
+    /// v.stooge_sort();
+    /// assert!(v == [-5, -3, 1, 2, 4]);
+    /// ```
+        fn stooge_sort(&mut self)
     where
         T: Ord;
+    /// Sorts the slice using stooge sort with a comparator function.
+    ///
+    /// This sort is unstable, has worst-case
+    /// time complexity of O(n^(log(3)/log(1.5)))
+    /// ≈ O(n^2.7095), and recurses at most n levels deep.
+    ///
+    /// The comparator function must define a total ordering for the elements in the slice. If
+    /// the ordering is not total, the order of the elements is unspecified. An order is a
+    /// total order if it is (for all `a`, `b` and `c`):
+    ///
+    /// * total and antisymmetric: exactly one of `a < b`, `a == b` or `a > b` is true, and
+    /// * transitive, `a < b` and `b < c` implies `a < c`. The same must hold for both `==` and `>`.
+    ///
+    /// For example, while [`f64`] doesn't implement [`Ord`] because `NaN != NaN`, we can use
+    /// `partial_cmp` as our sort function when we know the slice doesn't contain a `NaN`.
+    ///
+    /// ```
+    /// use stoogesort::Stooge;
+    /// let mut floats = [5f64, 4.0, 1.0, 3.0, 2.0];
+    /// floats.stooge_sort_by(|a, b| a.partial_cmp(b).unwrap());
+    /// assert_eq!(floats, [1.0, 2.0, 3.0, 4.0, 5.0]);
+    /// ```
     fn stooge_sort_by<F>(&mut self, compare: F)
     where
         F: FnMut(&T, &T) -> Ordering;

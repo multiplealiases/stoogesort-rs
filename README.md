@@ -21,8 +21,8 @@ and import the [`Stooge`] extension trait.
 use stoogesort::Stooge;
 ```
 
-Usage should be identical to [`slice::sort()`](slice::sort) and
- [`slice::sort_by()`](slice::sort_by).
+Usage should be identical to [`slice::sort()`](slice::sort),
+ [`slice::sort_by()`](slice::sort_by), and [`.stooge_sort_by_key()`](slice::sort_by_key).
 
 # Examples
 

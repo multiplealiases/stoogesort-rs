@@ -43,6 +43,25 @@ pub trait Stooge<T> {
     fn stooge_sort_by<F>(&mut self, compare: F)
     where
         F: FnMut(&T, &T) -> Ordering;
+    /// Sorts the slice using stooge sort with a key extraction function.
+    ///
+    /// This sort is unstable, has worst-case
+    /// time complexity of O(n^(log(3)/log(1.5)) * m)
+    /// ≈ O(n^2.7095 * m), where the key function is O(m),
+    /// and recurses at most n levels deep.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let mut v = [-5i32, 4, 1, -3, 2];
+    ///
+    /// v.sort_by_key(|k| k.abs());
+    /// assert!(v == [1, 2, -3, 4, -5]);
+    /// ```
+    fn stooge_sort_by_key<F, K>(&mut self, compare: F)
+    where
+        F: FnMut(&T) -> K,
+        K: Ord;
 }
 
 impl<T> Stooge<T> for [T] {
@@ -63,6 +82,18 @@ impl<T> Stooge<T> for [T] {
         } else {
             stooge_sort(self, 0, self.len() - 1, &mut |a, b| {
                 compare(a, b) == Ordering::Less
+            });
+        }
+    }
+    fn stooge_sort_by_key<F, K>(&mut self, mut compare: F)
+    where
+        F: FnMut(&T) -> K,
+        K: Ord,
+    {
+        if self.is_empty() || self.len() == 1 {
+        } else {
+            stooge_sort(self, 0, self.len() - 1, &mut |a, b| {
+                compare(a).lt(&compare(b))
             });
         }
     }

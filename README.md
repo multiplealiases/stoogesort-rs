@@ -1,9 +1,10 @@
 Ergonomic stooge sort implementation.
 
-Implements 2 methods for stooge-sorting [`[T]`](array)/[`Vec<T>`](std::vec::Vec):
+Implements 3 methods for stooge-sorting [`[T]`](array)/[`Vec<T>`](std::vec::Vec):
 
 * [`.stooge_sort()`](Stooge::stooge_sort) (for [`Ord`](std::cmp) types)
 * [`.stooge_sort_by()`](Stooge::stooge_sort_by) (for everything else; bring your own comparator function!)
+* [`.stooge_sort_by_key()`](Stooge::stooge_sort_by_key) (also for everything else)
 
 # Usage
 
@@ -11,7 +12,7 @@ Add the following to your `Cargo.toml`,
 
 ```text
 [dependencies]
-stoogesort = "0.1.0"
+stoogesort = "0.2.0"
 ```
 
 and import the [`Stooge`] extension trait.
@@ -43,6 +44,15 @@ use stoogesort::Stooge;
 let mut floats = [0.1, 0.0, 1.0, -1.6];
 floats.stooge_sort_by(|a, b| a.partial_cmp(b).unwrap());
 assert_eq!(floats, [-1.6, 0.0, 0.1, 1.0]);
+```
+
+Sorting strings tagged with numbers at the end:
+
+```
+use stoogesort::Stooge;
+let mut s = [ "foo_1", "bar_0", "quux_2" ];
+s.stooge_sort_by_key(|t| t.split('_').last().unwrap().parse::<i64>().unwrap());
+assert_eq!(s, [ "bar_0", "foo_1", "quux_2" ]);
 ```
 
 # Acknowledgements
@@ -152,21 +162,27 @@ That's right! It's nonsense. A NaN is never less than or greater than
 anything else, including itself. This causes sorting on `[T: PartialOrd]`
 to be unspecified if it contains incomparable pairs of elements.
 
-Indeed, this is documented (rather indirectly) in [`slice::sort_by`].
+Indeed, this is documented (rather indirectly) in [`slice::sort_by()`].
 
 > The comparator function must define a total ordering for the elements in
 > the slice. If the ordering is not total, the order of the elements is unspecified.
 
-For this reason, the standard library instead provides 2 methods
-(+ variants for unstable and cached and keyed) for sorting slices. They are:
+For this reason, the standard library instead provides 3 methods
+(+ variants for unstable (not that stooge sort is stable) and cached)
+for sorting slices. They are:
 
 * [`slice::sort()`]
 
 * [`slice::sort_by()`]
 
+* [`slice::sort_by_key()`]
+
 Notice the bound [`Ord`](std::cmp::Ord) on [`sort()`](slice::sort) and the distinct lack
-of one on [`sort_by()`](slice::sort_by). The standard library is protecting you from an
-attempt to naively sort [`PartialOrd`](std::cmp::PartialOrd)s by making you gaze upon
+of one on [`sort_by()`](slice::sort_by). Also notice the bound [`Ord`](std::cmp::Ord) on the
+type parameter `K` in [`sort_by_key()`](slice::sort_by_key).
+
+The standard library is protecting you from an attempt to naively sort
+[`PartialOrd`](std::cmp::PartialOrd)s by making you gaze upon the Wrongness that is
 `.sort_by(|a, b| a.partial_cmp(b).unwrap())` in the [`sort_by()`](slice::sort_by) example.
 
 As such, I've taken the liberty of imitating the standard library in this library.
